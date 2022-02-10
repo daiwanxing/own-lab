@@ -2,10 +2,16 @@ $primary--color: #2970ff;
 
 $--warning--color: orange;
 
+@mixin reset-title {
+	font-size: 32px;
+	color: red;
+}
 
 .flex-1 {
 	display: flex;
 	flex: 1;
 	justify-content: center;
 	align-items: centers;
+
+	@include reset-title;
 }

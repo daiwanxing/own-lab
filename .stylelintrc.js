@@ -1,7 +1,11 @@
-{
+module.exports = {
     "extends": ["stylelint-config-standard"],
     "plugins": ["stylelint-scss"],
     "rules": {
+        "at-rule-no-unknown": [true, {
+          "ignoreAtRules": ["mixin", "include"]
+        }],
+        "at-rule-empty-line-before": null,
         "block-no-empty": null,
         "color-no-invalid-hex": true,
         "declaration-colon-space-after": "always",

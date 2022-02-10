@@ -35,11 +35,12 @@ export default {
         new VueLoaderPlugin() as unknown,
         // 指定每次热更新后或者打包后，lint css代码
         new StylelintPlugin({
-            configFile: path.join(root, ".stylelintrc"),
+            configFile: path.join(root, ".stylelintrc.js"),
             fix: true,
             lintDirtyModulesOnly: false, // 启动时必须检查一遍
             threads: true,
-            extensions: ["css", "scss", "sass"]
+            extensions: ["css", "scss", "sass"],
+            cache: true,
         }),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
