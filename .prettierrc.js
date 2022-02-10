@@ -1,0 +1,6 @@
+module.exports =  {
+    "tabs": false,
+    "tabWidth": 4,
+    "endOfLine": "auto",
+    "printWidth": 140
+};

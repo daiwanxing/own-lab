@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "strict": true,
+        "importHelpers": true,
+        "moduleResolution": "node",
+        "noImplicitThis": true,
+        "module": "ESNext",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "strictBindCallApply": true,
+        "allowJs": true,
+        "skipLibCheck": true,
+        // faker.js 内部用到了commonjs，但是tsconfig.json 配置的module是ES Module规范
+        "skipDefaultLibCheck": true, // 跳过库的ts类型检查
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        },
+        "typeRoots": ["./src/typings"],
+        "types": ["node"]
+    },
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
+    },
+    "exclude": ["**/node_modules/*", "node_modules"]
+}
