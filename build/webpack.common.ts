@@ -7,6 +7,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import dotEnv from "dotenv";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 export const root = path.join(__dirname, "../");
 
@@ -14,16 +15,59 @@ export const root = path.join(__dirname, "../");
 dotEnv.config({
     path: path.join(root, ".env.dev") // 也可以自己指定工作目录文件
 });
-// console.log(process.env.S3_BUCKET); 打印env文件
+// console.log(process.env.S3_BUCKET); 打印env.dev文件中配置的环境变量
+
+const isBuildMode=  process.env.NODE_ENV === "production";
 
 // vue-loader-plugin 负责处理后缀名为vue的文件将其打包成一个js脚本  
 export default {
     target: "web",
+    mode: isBuildMode ? "production" : "development",
     entry: {
         app: path.join(root, "src", "main.ts")
     },
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                use: [{
+                    loader: "ts-loader",
+                    options: {
+                        // 让ts-loader去处理.vue文件中的lang=ts的代码给它编译出js来
+                        appendTsSuffixTo: [/.vue$/],
+                    }
+                }]
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [ isBuildMode ? MiniCssExtractPlugin.loader : "style-loader", "css-loader",  "postcss-loader", "sass-loader"]
+            },
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"]
+            },
+            {
+                test: /\.vue$/i,
+                loader: "vue-loader",
+                options: {
+                    
+                }
+            },
+            {
+                test: /\.(png|jpg|gif)$/i,
+                // 输出一个url
+                type: "assets/resource"
+            },
+            {
+                test: /\.svg/,
+                // 输出一个data-url
+                type: "assets/inline"
+            }
+        ]
+    },
     output: {
-        filename: "[name]:[chunkhash:8].js",
+        chunkFilename: "[id].[chunkhash:8].js",
+        filename: "[name].[contenthash:8].bundle.js",
         path: path.join(root, "dist")
     },
     resolve: {
@@ -36,6 +80,7 @@ export default {
     optimization: {
         splitChunks: {
             chunks: "all",
+            name: "vendor"
         }
     },
     plugins: [
@@ -49,7 +94,9 @@ export default {
             extensions: ["css", "scss", "sass"],
             cache: true,
         }),
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            verbose: true,
+        }),
         new HtmlWebpackPlugin({
             template: path.join(root, "src", "index.html"),
         }),
@@ -63,7 +110,7 @@ export default {
         }),
         // 定义全局的变量，会自动内联到代码里面， 这里定义了一个全局的判断是否为生产环境的键
         new webpack.DefinePlugin({
-            PRODUCTION: process.env.NODE_ENV === "production",
+            PRODUCTION: isBuildMode,
             // 禁止devtools在生产环境的使用
             __VUE_PROD_DEVTOOLS__: true,
             // 放弃选项式api的bundle (虽然Vue3仍然支持 options api 的写法，但是组合式API的出现是可以完全替代vue2的。设置为true

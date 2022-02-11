@@ -5,46 +5,6 @@ import common, { root } from "./webpack.common";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 export default merge(common, {
-    mode: "development",
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                use: [{
-                    loader: "ts-loader",
-                    options: {
-                        // 让ts-loader去处理.vue文件中的lang=ts的代码给它编译出js来
-                        appendTsSuffixTo: [/.vue$/],
-                    }
-                }]
-            },
-            {
-                test: /\.s[ac]ss$/i,
-                use: [MiniCssExtractPlugin.loader, "css-loader",  "postcss-loader", "sass-loader"]
-            },
-            {
-                test: /\.css$/i,
-                use: ["style-loader", "css-loader"]
-            },
-            {
-                test: /\.vue$/i,
-                loader: "vue-loader",
-                options: {
-                    
-                }
-            },
-            {
-                test: /\.(png|jpg|gif)$/i,
-                // 输出一个url
-                type: "assets/resource"
-            },
-            {
-                test: /\.svg/,
-                // 输出一个data-url
-                type: "assets/inline"
-            }
-        ]
-    },
     devServer: {
         client: {
             progress: true,
