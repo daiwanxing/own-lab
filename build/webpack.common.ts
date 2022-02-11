@@ -6,8 +6,15 @@ import { VueLoaderPlugin } from "vue-loader";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
+import dotEnv from "dotenv";
 
 export const root = path.join(__dirname, "../");
+
+// 不传参的话默认为会调用process.cwd(); 返回node.js进程的当前工作目录， 然后加载工作目录下的.env文件
+dotEnv.config({
+    path: path.join(root, ".env.dev") // 也可以自己指定工作目录文件
+});
+// console.log(process.env.S3_BUCKET); 打印env文件
 
 // vue-loader-plugin 负责处理后缀名为vue的文件将其打包成一个js脚本  
 export default {
@@ -32,7 +39,7 @@ export default {
         }
     },
     plugins: [
-        new VueLoaderPlugin() as unknown,
+        new VueLoaderPlugin(),
         // 指定每次热更新后或者打包后，lint css代码
         new StylelintPlugin({
             configFile: path.join(root, ".stylelintrc.js"),
