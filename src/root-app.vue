@@ -3,6 +3,7 @@
     <h1>dsahdasdasijodsa</h1>
     <Cl-page />
     <VerifyCode />
+    <createVnode />
   </div>
 </template>
 
@@ -10,15 +11,8 @@
 import ClPage from "@/component/page.vue";
 import VerifyCode from "@/component/verfy-code.vue";
 import "./index.scss";
+import createVnode from "@/component/createVnode.vue";
 
-defineProps({
-  name: {
-    type: String,
-    default: ""
-  }
-});
-
-console.log("哈哈哈");
 </script>
 
 <style lang="scss">

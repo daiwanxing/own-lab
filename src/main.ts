@@ -19,17 +19,7 @@ const city: string[] = [];
 for (let idx = 0; idx < 1000; idx++) {
     city.push(faker.animal.bird());
 }
-
-console.log(city);
-console.log(PRODUCTION);
-
-console.log("hello world", generateNanoId(20));
-
 createApp(App).mount("#app");
-
-const a = 23;
-
-console.log(a);
 
 // type PrintHandle = {
 //   pages: number;
@@ -41,4 +31,4 @@ console.log(a);
 // type Res = PrintHandle extends Demo ? true : false;
 
 // type Res = Exclude<PrintHandle, Demo>;
-// type Res = Extract<Demo, PrintHandle>;
+// type Res = Extract<Demo, PrintHandle>
