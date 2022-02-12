@@ -18,6 +18,7 @@ module.exports = {
         semi: ["error", "always"],
         quotes: ["error", "double"],
         "@typescript-eslint/no-empty-interface": ["error"],
+        "@typescript-eslint/no-non-null-assertion": ["off"],
         "@typescript-eslint/consistent-type-imports": ["error"],
         "vue/singleline-html-element-content-newline": ["off"],
         "vue/html-self-closing": ["off"]
