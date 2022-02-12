@@ -3,8 +3,10 @@ import type { Configuration } from "webpack";
 import { merge } from "webpack-merge";
 import common, { root } from "./webpack.common";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import apiMocker from "mocker-api";
 
 export default merge(common, {
+    devtool: "eval-source-map",
     devServer: {
         client: {
             progress: true,
@@ -19,6 +21,15 @@ export default merge(common, {
         port: 9000,
         open: true,
         hot: true,
+        setupMiddlewares (middlewares: unknown, devServer: any) {
+            apiMocker(devServer.app, path.resolve(root, "src/mock/index.ts"), {
+                // proxy: {
+                //     "/api/(.*)": "http://127.0.0.1:3721/"
+                // },
+                changeHost: true,
+            });
+            return middlewares;
+        }
     },
     plugins: [
         // sourcemap devltool plugin可以对生成的内容
