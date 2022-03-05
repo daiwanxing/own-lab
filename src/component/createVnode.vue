@@ -6,13 +6,16 @@
 </template>
 
 <script lang="ts" setup>
-import { createVNode, render, onMounted, shallowRef } from "vue";
+import { createVNode, render, onMounted, shallowRef, onBeforeUnmount } from "vue";
 import inlineTitle from "./inline-title.vue";
-
 
 const vm = createVNode(inlineTitle, { msg: "big-title" });
 
 const boxVNode = shallowRef<HTMLElement>();
+onBeforeUnmount(() => {
+  console.dir((boxVNode.value as any)._vnode);
+  render(null, boxVNode.value as Element);
+});
 
 onMounted(() => {
   render(vm, boxVNode.value!);

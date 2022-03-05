@@ -5,10 +5,12 @@
       <div class="flex-item"></div>
       <div class="flex-item"></div>
     </div>
+    <animateNumber />
   </main> 
 </template>
 
 <script setup>
+import animateNumber from "./animate-numer.vue";
 import { ref } from "vue";
 const msg = ref("Goods Wheel");
 </script>
