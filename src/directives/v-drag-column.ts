@@ -20,7 +20,7 @@ export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: H
 
         const colResizeNode = document.createElement("div");
         colResizeNode.classList.add(style["col-resize"]);
-        colResizeNode.style.transform = `translateX(${window.getComputedStyle(el).borderRightWidth})`;
+        // colResizeNode.style.transform = `translateX(${window.getComputedStyle(el).borderRightWidth})`;
         colResizeNode.setAttribute("data-colKey", generateNanoId());
         el.append(colResizeNode);
 
@@ -90,7 +90,8 @@ export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: H
     },
     unmounted (el) {
         const children = el.children;
-        for (let idx = 0; idx < children.length; idx++) {
+        const len = children.length;
+        for (let idx = 0; idx < len; idx++) {
             const child = children[idx];
             if (child.getAttribute("data-colKey")) {
                 el.removeEventListener("mousedown", el.colResizeHandler!);
