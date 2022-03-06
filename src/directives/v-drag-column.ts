@@ -10,17 +10,17 @@ type DragProps = {
     // 注意，如果目标容器有兄弟节点，如果调整到最大宽度为父级宽度，可能会影响其他兄弟节点布局样式
     // 而且不一定会成功设置成父级等宽，具体实际宽度受css布局影响。
     maxWidth: number; 
-
 }
 
-export const vDragColumn: Directive<HTMLElement> = {
-    mounted(el, binding: DirectiveBinding<DragProps>) {
+export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: HTMLDivElement , evt: Event) => void) | null }> = {
+    mounted(el , binding: DirectiveBinding<DragProps>) {
         const props = isObject(binding.value) ? binding.value : {  } as DragProps;
         const positionPropertyWhiteList = ["relative", "absolute", "sticky", "fixed"];
         if (!positionPropertyWhiteList.includes(window.getComputedStyle(el, null).position)) el.style.position = "relative";
 
         const colResizeNode = document.createElement("div");
         colResizeNode.classList.add(style["col-resize"]);
+        colResizeNode.style.transform = `translateX(${window.getComputedStyle(el).borderRightWidth})`;
         colResizeNode.setAttribute("data-colKey", generateNanoId());
         el.append(colResizeNode);
 
@@ -43,6 +43,8 @@ export const vDragColumn: Directive<HTMLElement> = {
         colResizeConfigOption.minWidth = props.minWidth || clientWidth;
         colResizeConfigOption.modifyWidth = clientWidth;
         colResizeNode.addEventListener("mousedown", enableDocumentMouseEnterHandle);
+        // 只是便于解绑事件，而不得已为之的操作...
+        el.colResizeHandler = enableDocumentMouseEnterHandle;
 
         function enableDocumentMouseEnterHandle(this: typeof colResizeNode) {
             genrateLineHandle.call(this);
@@ -90,7 +92,12 @@ export const vDragColumn: Directive<HTMLElement> = {
         const children = el.children;
         for (let idx = 0; idx < children.length; idx++) {
             const child = children[idx];
-            if (child.getAttribute("data-colKey")) el.removeChild(child);
+            if (child.getAttribute("data-colKey")) {
+                el.removeEventListener("mousedown", el.colResizeHandler!);
+                break;
+            }
         }
+        // 让引用次数为0，触发GC机制
+        el.colResizeHandler = null;
     }
 };
