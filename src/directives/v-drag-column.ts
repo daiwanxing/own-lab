@@ -10,6 +10,8 @@ type DragProps = {
     // 注意，如果目标容器有兄弟节点，如果调整到最大宽度为父级宽度，可能会影响其他兄弟节点布局样式
     // 而且不一定会成功设置成父级等宽，具体实际宽度受css布局影响。
     maxWidth: number; 
+    // 标线的颜色
+    indexColor: string;
 }
 
 export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: HTMLDivElement , evt: Event) => void) | null }> = {
@@ -58,6 +60,7 @@ export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: H
         function genrateLineHandle(this: typeof colResizeNode) {
             ruleNode = document.createElement("div");
             ruleNode.classList.add(style["rule-line"]);
+            if (props.indexColor) ruleNode.style.backgroundColor = props.indexColor;
             this.append(ruleNode);
         }
 

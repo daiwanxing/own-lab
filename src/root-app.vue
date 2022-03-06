@@ -2,7 +2,7 @@
   <main>
     <div
       ref="containerNode"
-      v-drag-column="{ minWidth: 300, maxWidth: 800 }"
+      v-drag-column="{ minWidth: 300, maxWidth: 800, indexColor: 'red' }"
       class="box"
     >
     </div>
