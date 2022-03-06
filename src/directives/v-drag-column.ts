@@ -22,7 +22,6 @@ export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: H
 
         const colResizeNode = document.createElement("div");
         colResizeNode.classList.add(style["col-resize"]);
-        // colResizeNode.style.transform = `translateX(${window.getComputedStyle(el).borderRightWidth})`;
         colResizeNode.setAttribute("data-colKey", generateNanoId());
         el.append(colResizeNode);
 
@@ -49,22 +48,22 @@ export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: H
         el.colResizeHandler = enableDocumentMouseEnterHandle;
 
         function enableDocumentMouseEnterHandle(this: typeof colResizeNode) {
-            genrateLineHandle.call(this);
+            genrateIndexLine.call(this);
             const { left } = this.getBoundingClientRect();
             colResizeConfigOption.colResizeOffsetLeft = left;
-            document.documentElement.addEventListener("mousemove", moveLine);
-            document.documentElement.addEventListener("mouseup", removeLineHandle);
+            document.documentElement.addEventListener("mousemove", moveIndexLine);
+            document.documentElement.addEventListener("mouseup", removeIndexLine);
         }
 
-        let ruleNode: HTMLElement;
-        function genrateLineHandle(this: typeof colResizeNode) {
-            ruleNode = document.createElement("div");
-            ruleNode.classList.add(style["rule-line"]);
-            if (props.indexColor) ruleNode.style.backgroundColor = props.indexColor;
-            this.append(ruleNode);
+        let indexLineNode: HTMLElement; // 标线的dom节点
+        function genrateIndexLine(this: typeof colResizeNode) {
+            indexLineNode = document.createElement("div");
+            indexLineNode.classList.add(style["index-line"]);
+            if (props.indexColor) indexLineNode.style.backgroundColor = props.indexColor;
+            this.append(indexLineNode);
         }
 
-        function moveLine(evt: Event) {
+        function moveIndexLine(evt: Event) {
             const mouseEvt = evt as MouseEvent;
             const pageX = mouseEvt.pageX;
             const { modifyWidth: clientWidth, colResizeOffsetLeft } = colResizeConfigOption;
@@ -74,21 +73,21 @@ export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: H
             // 往左拖动，只需要关注拖动的距离是否小于minWidth， 往右拖动， 只需要关注拖动的距离是否大于maxWidth
             if (colResizeConfigOption.minWidth < willUpdateWidth && willUpdateWidth <= colResizeConfigOption.maxWidth) {
                 colResizeConfigOption.colResizeWidth = pageX - colResizeOffsetLeft;
-                ruleNode.style.transform = `translateX(${colResizeConfigOption.colResizeWidth}px)`;
+                indexLineNode.style.transform = `translateX(${colResizeConfigOption.colResizeWidth}px)`;
             }
         }
 
-        function removeLineHandle() {
-            if (ruleNode) {
+        function removeIndexLine() {
+            if (indexLineNode) {
                 const { colResizeWidth, modifyWidth } = colResizeConfigOption;
                 el.style.width = modifyWidth + colResizeWidth + "px";
                 colResizeConfigOption.modifyWidth = modifyWidth + colResizeWidth;
-                ruleNode.remove();
+                indexLineNode.remove();
             }
 
             colResizeConfigOption.colResizeWidth = 0;
-            document.documentElement.removeEventListener("mousemove", moveLine);
-            document.documentElement.removeEventListener("mouseup", removeLineHandle);
+            document.documentElement.removeEventListener("mousemove", moveIndexLine);
+            document.documentElement.removeEventListener("mouseup", removeIndexLine);
         }
     },
     unmounted (el) {
@@ -101,7 +100,6 @@ export const vDragColumn: Directive<HTMLElement & { colResizeHandler?: ((this: H
                 break;
             }
         }
-        // 让引用次数为0，触发GC机制
         el.colResizeHandler = null;
     }
 };
