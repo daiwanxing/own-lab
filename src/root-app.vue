@@ -2,7 +2,7 @@
   <main>
     <div
       ref="containerNode"
-      v-drag-column
+      v-drag-column="{ minWidth: 300, maxWidth: 800 }"
       class="box"
     >
     </div>
@@ -12,8 +12,7 @@
 
 <script lang="ts">
 import "./index.scss";
-import type { VNode, RendererElement } from "vue";
-import { onMounted , shallowRef, onUnmounted, createVNode, defineComponent, render } from "vue";
+import { defineComponent } from "vue";
 import { vDragColumn } from "@/directives/v-drag-column";
 
 export default defineComponent({

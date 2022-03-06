@@ -1,6 +1,7 @@
 import type { Directive, DirectiveBinding } from "vue";
 import style from "./v-drag-column.module.scss";
 import { isObject } from "lodash-es";
+import { generateNanoId } from "@/utils/nano";
 
 type DragProps = {
     // 目标容器最小可调整的宽度， 默认是容器节点的计算后的样式宽度
@@ -11,6 +12,7 @@ type DragProps = {
     maxWidth: number; 
 
 }
+
 export const vDragColumn: Directive<HTMLElement> = {
     mounted(el, binding: DirectiveBinding<DragProps>) {
         const props = isObject(binding.value) ? binding.value : {  } as DragProps;
@@ -19,11 +21,13 @@ export const vDragColumn: Directive<HTMLElement> = {
 
         const colResizeNode = document.createElement("div");
         colResizeNode.classList.add(style["col-resize"]);
+        colResizeNode.setAttribute("data-colKey", generateNanoId());
         el.append(colResizeNode);
 
         const colResizeConfigOption = {
             modifyWidth: 0,
             minWidth: 0,
+            maxWidth: 0,
             colResizeOffsetLeft: 0,
             colResizeWidth: 0,
         };
@@ -60,7 +64,10 @@ export const vDragColumn: Directive<HTMLElement> = {
             const pageX = mouseEvt.pageX;
             const { modifyWidth: clientWidth, colResizeOffsetLeft } = colResizeConfigOption;
 
-            if (colResizeConfigOption.minWidth < clientWidth + pageX - colResizeOffsetLeft) {
+            const currentPosition = pageX - colResizeOffsetLeft;
+            const willUpdateWidth = clientWidth + currentPosition;
+            // 往左拖动，只需要关注拖动的距离是否小于minWidth， 往右拖动， 只需要关注拖动的距离是否大于maxWidth
+            if (colResizeConfigOption.minWidth < willUpdateWidth && willUpdateWidth <= colResizeConfigOption.maxWidth) {
                 colResizeConfigOption.colResizeWidth = pageX - colResizeOffsetLeft;
                 ruleNode.style.transform = `translateX(${colResizeConfigOption.colResizeWidth}px)`;
             }
@@ -79,4 +86,11 @@ export const vDragColumn: Directive<HTMLElement> = {
             document.documentElement.removeEventListener("mouseup", removeLineHandle);
         }
     },
+    unmounted (el) {
+        const children = el.children;
+        for (let idx = 0; idx < children.length; idx++) {
+            const child = children[idx];
+            if (child.getAttribute("data-colKey")) el.removeChild(child);
+        }
+    }
 };

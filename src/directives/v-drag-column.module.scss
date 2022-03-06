@@ -3,8 +3,9 @@
 	right: 0;
 	top: 0;
 	bottom: 0;
-	width: 1px;
+	width: 2px;
 	background-color: orange;
+	z-index: 99;
 }
 
 .col-resize {
@@ -12,7 +13,7 @@
 	top: 0;
 	bottom: 0;
 	right: 0;
-	width: 5px;
+	width: 8px;
 	z-index: 1;
 	cursor: col-resize;
 }
