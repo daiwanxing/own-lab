@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>vue3 api</h1>
+    <h1 :class="module.red">vue3 api</h1>
     <div ref="boxVNode"></div>
   </div>
 </template>
@@ -13,7 +13,6 @@ const vm = createVNode(inlineTitle, { msg: "big-title" });
 
 const boxVNode = shallowRef<HTMLElement>();
 onBeforeUnmount(() => {
-  console.dir((boxVNode.value as any)._vnode);
   render(null, boxVNode.value as Element);
 });
 
@@ -22,3 +21,9 @@ onMounted(() => {
 });
 
 </script>
+
+<style module="module">
+.red {
+  color: #2970ff;
+}
+</style>

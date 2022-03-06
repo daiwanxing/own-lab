@@ -41,7 +41,8 @@ const msg = ref("Goods Wheel");
 }
 
 h1 {
-
+  font-size: 88px;
+  font-weight: 800;
   color: rgb(133, 21, 21);
   @extend .base--title;
 
