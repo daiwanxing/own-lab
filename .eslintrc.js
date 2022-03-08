@@ -4,7 +4,7 @@ module.exports = {
     env: {
         browser: true,
         node: true,
-        "vue/setup-compiler-macros": true
+        "vue/setup-compiler-macros": true,
     },
     parser: "vue-eslint-parser",
     parserOptions: {
@@ -14,6 +14,19 @@ module.exports = {
             tsx: true,
         },
     },
+    // 让自定义的全局变量可用
+    globals: {
+        Loca: "readonly",
+        require: true,
+        byskplayer: true,
+        AMap: "readonly",
+        AMapUI: "readonly",
+        defineProps: "readonly",
+        defineEmits: "readonly",
+        defineExpose: "readonly",
+        withDefaults: "readonly",
+        PRODUCTION: "readonly",
+    },
     rules: {
         semi: ["error", "always"],
         quotes: ["error", "double"],
@@ -21,10 +34,7 @@ module.exports = {
         "@typescript-eslint/no-non-null-assertion": ["off"],
         "@typescript-eslint/consistent-type-imports": ["error"],
         "vue/singleline-html-element-content-newline": ["off"],
-        "vue/html-self-closing": ["off"]
-    },
-    globals: {
-        PRODUCTION: "readonly",
+        "vue/html-self-closing": ["off"],
     },
     plugins: ["@typescript-eslint"],
     extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:vue/vue3-recommended"],
