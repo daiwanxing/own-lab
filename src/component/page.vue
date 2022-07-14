@@ -5,10 +5,12 @@
       <div class="flex-item"></div>
       <div class="flex-item"></div>
     </div>
+    <animateNumber />
   </main> 
 </template>
 
 <script setup>
+import animateNumber from "./animate-numer.vue";
 import { ref } from "vue";
 const msg = ref("Goods Wheel");
 </script>
@@ -39,7 +41,8 @@ const msg = ref("Goods Wheel");
 }
 
 h1 {
-
+  font-size: 88px;
+  font-weight: 800;
   color: rgb(133, 21, 21);
   @extend .base--title;
 

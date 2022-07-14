@@ -39,19 +39,21 @@ export default {
                 }]
             },
             {
-                test: /\.s[ac]ss$/i,
-                use: [ isBuildMode ? MiniCssExtractPlugin.loader : "style-loader", "css-loader",  "postcss-loader", "sass-loader"]
-            },
-            {
-                test: /\.css$/i,
-                use: ["style-loader", "css-loader"]
+                test: /\.s?css$/i,
+                use: [ isBuildMode ? MiniCssExtractPlugin.loader : "vue-style-loader", 
+                {
+                    loader: "css-loader",
+                    options: {
+                        modules: {
+                            auto: true,
+                            localIdentName: "[path][name]__[local]--[hash:base64:5]",
+                        }, // modules 为true 为所有scss的文件启用css module
+                    },
+                },  "postcss-loader", "sass-loader"],
             },
             {
                 test: /\.vue$/i,
                 loader: "vue-loader",
-                options: {
-                    
-                }
             },
             {
                 test: /\.(png|jpg|gif)$/i,

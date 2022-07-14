@@ -31,10 +31,7 @@ const mouseMoveHandler = function (this: HTMLElement, evt: MouseEvent) {
                 this.style.transform = `translateX(${position}px)`;
             }
         }
-
-
     }
-
 };
 
 
@@ -63,8 +60,6 @@ onMounted(() => {
 <style lang="scss">
 @use "../styles/var.scss" as var;
 @use "sass:color";
-
-// 
 
 .box {
     margin: auto;

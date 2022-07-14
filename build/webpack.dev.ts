@@ -18,7 +18,7 @@ export default merge(common, {
         static: path.join(root, "dist"),
         // 启动G-ZIP
         compress: true,
-        port: 9000,
+        port: "auto",
         open: true,
         hot: true,
         setupMiddlewares (middlewares: unknown, devServer: any) {
